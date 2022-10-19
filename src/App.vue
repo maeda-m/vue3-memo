@@ -1,52 +1,67 @@
 <template>
   <i-layout vertical class="_height:100vh">
     <i-layout-aside>
-      <i-list-group>
-        <i-list-group-item href="#">メモ１</i-list-group-item>
-        <i-list-group-item active>メモ２</i-list-group-item>
-        <i-list-group-item>メモ３</i-list-group-item>
-        <i-list-group-item disabled>メモ４</i-list-group-item>
-      </i-list-group>
-
-      <div class="_display:flex _justify-content:center _margin:1/2">
-        <i-tooltip color="dark">
-          <i-button circle size="lg">
-            <i-icon name="ink-plus" />
-            <!-- <i-loader /> -->
-          </i-button>
-          <template #body>新規メモを登録します。</template>
-        </i-tooltip>
-      </div>
+      <MemoList v-bind:memos="memos" v-on:action-edit="edit($event.id)" />
+      <MemoCreator v-on:action-create="create()" />
     </i-layout-aside>
 
     <i-layout>
-      <i-layout-content>
-        <i-textarea
-          v-model="value"
-          placeholder="メモの内容を入力してください。"
-          style="height: 90vh"
-        />
-      </i-layout-content>
-
-      <i-layout-footer>
-        <div class="_display:flex _margin:1/2">
-          <div class="_flex-grow:1">
-            <i-button color="primary" class="_width:100%">
-              <!-- <i-loader /> -->
-              更新する
-            </i-button>
-          </div>
-          <div class="_margin-x:1/2"></div>
-          <div>
-            <i-button outline color="danger">
-              <!-- <i-loader /> -->
-              削除する
-            </i-button>
-          </div>
-        </div>
-      </i-layout-footer>
+      <MemoEditor
+        v-bind:memo="editMemo"
+        v-on:action-update="update($event.id, $event.attrs)"
+        v-on:action-destroy="destroy($event.id)"
+      />
     </i-layout>
   </i-layout>
 </template>
 
-<script setup></script>
+<script setup>
+import MemoList from "@/components/MemoList.vue";
+import MemoCreator from "@/components/MemoCreator.vue";
+import MemoEditor from "@/components/MemoEditor.vue";
+
+import { reactive, onMounted } from "vue";
+import Memo from "@/models/Memo.js";
+
+const editMemo = reactive({});
+const create = () => {
+  const memo = Memo.create();
+  memos[memo.id] = memo;
+  Object.assign(editMemo, memo.attrs);
+
+  console.log("create", editMemo);
+};
+
+const edit = (memoId) => {
+  const memo = memos[memoId];
+  Object.assign(editMemo, memo.attrs);
+
+  console.log("edit", editMemo);
+};
+
+const update = (memoId, attrs) => {
+  const memo = memos[memoId];
+  memo.update(attrs);
+  Object.assign(editMemo, attrs);
+
+  console.log("update", editMemo);
+};
+
+const destroy = (memoId) => {
+  const memo = memos[memoId];
+  memo.destroy();
+  Object.assign(editMemo, {
+    id: "",
+    content: "",
+  });
+
+  console.log("destroy", memo);
+};
+
+const memos = reactive({});
+onMounted(() => {
+  Memo.all().forEach((memo) => {
+    memos[memo.id] = memo;
+  });
+});
+</script>

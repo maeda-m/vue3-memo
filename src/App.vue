@@ -50,6 +50,7 @@ const update = (memoId, attrs) => {
 const destroy = (memoId) => {
   const memo = memos[memoId];
   memo.destroy();
+  delete memos[memoId];
   Object.assign(editMemo, {
     id: "",
     content: "",

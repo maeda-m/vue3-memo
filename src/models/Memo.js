@@ -3,11 +3,11 @@ import Repository from "@/composables/Repository.js";
 class Memo extends Repository {
   constructor(attrs) {
     super(attrs.id);
-    this.content = attrs.content;
+    this.content = attrs.content || "";
   }
 
   get title() {
-    return "TODO";
+    return this.content.split("\n")[0];
   }
 
   get attrs() {

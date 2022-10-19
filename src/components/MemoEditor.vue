@@ -1,7 +1,8 @@
 <template>
   <i-layout-content>
     <i-textarea
-      v-model="value"
+      v-bind:disable="content"
+      v-model="content"
       placeholder="メモの内容を入力してください。"
       style="height: 90vh"
     />
@@ -12,7 +13,9 @@
         <i-button
           color="primary"
           class="_width:100%"
-          v-on:click="emits('actionUpdate', { id })"
+          v-on:click="
+            emits('actionUpdate', { id, attrs: { content } })
+          "
         >
           <!-- <i-loader /> -->
           更新する
@@ -34,7 +37,7 @@
 </template>
 
 <script setup>
-import { unref } from "vue";
+import { toRef } from "vue";
 
 const emits = defineEmits(["actionUpdate", "actionDestroy"]);
 const props = defineProps({
@@ -43,5 +46,7 @@ const props = defineProps({
     required: true,
   },
 });
-const id = unref(props.memo.id);
+
+const id = toRef(props.memo, 'id');
+const content = toRef(props.memo, 'content');
 </script>

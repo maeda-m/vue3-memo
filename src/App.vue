@@ -24,39 +24,34 @@ import { reactive, onMounted } from "vue";
 import Memo from "@/models/Memo.js";
 
 const editMemo = reactive({});
-const create = () => {
-  const memo = Memo.create();
-  memos[memo.id] = memo;
-  Object.assign(editMemo, memo.attrs);
+const syncEditor = (attrs = {}) => {
+  Object.keys(editMemo).forEach((key) => {
+    editMemo[key] = "";
+  });
+  Object.assign(editMemo, attrs);
+};
 
-  console.log("create", editMemo);
+const create = () => {
+  const memo = Memo.create({ content: "新規メモ" });
+  memos[memo.id] = memo;
+  syncEditor(memo.attrs);
 };
 
 const edit = (memoId) => {
   const memo = memos[memoId];
-  Object.assign(editMemo, memo.attrs);
-
-  console.log("edit", editMemo);
+  syncEditor(memo.attrs);
 };
 
 const update = (memoId, attrs) => {
   const memo = memos[memoId];
   memo.update(attrs);
-  Object.assign(editMemo, attrs);
-
-  console.log("update", editMemo);
 };
 
 const destroy = (memoId) => {
   const memo = memos[memoId];
   memo.destroy();
   delete memos[memoId];
-  Object.assign(editMemo, {
-    id: "",
-    content: "",
-  });
-
-  console.log("destroy", memo);
+  syncEditor(null);
 };
 
 const memos = reactive({});

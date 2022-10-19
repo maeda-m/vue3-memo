@@ -1,9 +1,13 @@
 <template>
   <i-layout-content>
     <i-textarea
-      v-bind:disable="content"
+      v-bind:disabled="!isEditing"
+      v-bind:placeholder="
+        isEditing
+          ? 'メモの内容を入力してください。'
+          : '新規メモを登録するか、編集するメモを選んでください。'
+      "
       v-model="content"
-      placeholder="メモの内容を入力してください。"
       style="height: 90vh"
     />
   </i-layout-content>
@@ -11,33 +15,52 @@
     <div class="_display:flex _margin:1/2">
       <div class="_flex-grow:1">
         <i-button
+          v-bind:disabled="!isEditing"
           color="primary"
           class="_width:100%"
-          v-on:click="
-            emits('actionUpdate', { id, attrs: { content } })
-          "
+          v-on:click="emits('actionUpdate', { id, attrs: { content } })"
         >
-          <!-- <i-loader /> -->
           更新する
         </i-button>
       </div>
       <div class="_margin-x:1/2"></div>
       <div>
         <i-button
+          v-bind:disabled="!isEditing"
           outline
           color="danger"
-          v-on:click="emits('actionDestroy', { id })"
+          v-on:click="showConfirm()"
         >
-          <!-- <i-loader /> -->
           削除する
         </i-button>
       </div>
     </div>
   </i-layout-footer>
+
+  <i-modal size="sm" v-model="visibleConfirm">
+    <template #header> 確認メッセージ </template>
+    <div class="_display:flex _align-items:center">
+      <i-icon name="ink-danger" class="h2 _margin-y:0 _margin-right:1" />
+      メモを削除します。よろしいでしょうか？
+    </div>
+    <template #footer>
+      <div class="_display:flex _justify-content:space-between">
+        <i-button
+          color="danger"
+          v-on:click="
+            hideConfirm();
+            emits('actionDestroy', { id });
+          "
+          >削除する</i-button
+        >
+        <i-button color="light" v-on:click="hideConfirm()">キャンセル</i-button>
+      </div>
+    </template>
+  </i-modal>
 </template>
 
 <script setup>
-import { toRef } from "vue";
+import { ref, toRef, computed } from "vue";
 
 const emits = defineEmits(["actionUpdate", "actionDestroy"]);
 const props = defineProps({
@@ -47,6 +70,18 @@ const props = defineProps({
   },
 });
 
-const id = toRef(props.memo, 'id');
-const content = toRef(props.memo, 'content');
+const id = toRef(props.memo, "id");
+const content = toRef(props.memo, "content");
+
+const isEditing = computed(() => {
+  return !!id.value;
+});
+
+const visibleConfirm = ref(false);
+const showConfirm = () => {
+  visibleConfirm.value = true;
+};
+const hideConfirm = () => {
+  visibleConfirm.value = false;
+};
 </script>

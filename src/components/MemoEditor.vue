@@ -8,6 +8,7 @@
           : '新規メモを登録するか、編集するメモを選んでください。'
       "
       v-model="content"
+      v-on:input="emits('inputting', $event.target.value)"
       style="height: 90vh"
     />
   </i-layout-content>
@@ -62,7 +63,7 @@
 <script setup>
 import { ref, toRef, computed } from "vue";
 
-const emits = defineEmits(["actionUpdate", "actionDestroy"]);
+const emits = defineEmits(["actionUpdate", "actionDestroy", "inputting"]);
 const props = defineProps({
   memo: {
     type: Object,

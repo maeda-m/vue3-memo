@@ -9,16 +9,12 @@
   </div>
 
   <ConfirmModal
+    v-model="visibleConfirm"
     v-bind="{
-      visible: visibleConfirm,
       message: 'メモが変更されています。変更を破棄しますか？',
       okLabel: '破棄する',
     }"
-    v-on:click-ok="
-      dispatchCreateAction();
-      hideConfirm();
-    "
-    v-on:click-cancel="hideConfirm()"
+    v-on:click-ok="dispatchCreateAction()"
   />
 </template>
 
@@ -44,8 +40,5 @@ const showConfirmNeeded = () => {
 };
 const dispatchCreateAction = () => {
   emits("actionCreate");
-};
-const hideConfirm = () => {
-  visibleConfirm.value = false;
 };
 </script>

@@ -39,16 +39,12 @@
   </i-layout-footer>
 
   <ConfirmModal
+    v-model="visibleConfirm"
     v-bind="{
-      visible: visibleConfirm,
       message: 'メモを削除します。よろしいでしょうか？',
       okLabel: '削除する',
     }"
-    v-on:click-ok="
-      emits('actionDestroy', { id });
-      hideConfirm();
-    "
-    v-on:click-cancel="hideConfirm()"
+    v-on:click-ok="emits('actionDestroy', { id })"
   />
 </template>
 
@@ -74,9 +70,6 @@ const isActive = computed(() => {
 const visibleConfirm = ref(false);
 const showConfirm = () => {
   visibleConfirm.value = true;
-};
-const hideConfirm = () => {
-  visibleConfirm.value = false;
 };
 </script>
 

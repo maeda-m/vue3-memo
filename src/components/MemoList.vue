@@ -19,16 +19,12 @@
   </i-list-group>
 
   <ConfirmModal
+    v-model="visibleConfirm"
     v-bind="{
-      visible: visibleConfirm,
       message: 'メモが変更されています。変更を破棄しますか？',
       okLabel: '破棄する',
     }"
-    v-on:click-ok="
-      dispatchEditAction(focusMemoId);
-      hideConfirm();
-    "
-    v-on:click-cancel="hideConfirm()"
+    v-on:click-ok="dispatchEditAction(focusMemoId)"
   />
 </template>
 
@@ -71,9 +67,6 @@ const showConfirmNeeded = (id) => {
 };
 const dispatchEditAction = (id) => {
   emits("actionEdit", { id });
-};
-const hideConfirm = () => {
-  visibleConfirm.value = false;
 };
 </script>
 

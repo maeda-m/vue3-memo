@@ -1,7 +1,7 @@
 <template>
   <i-modal
     v-bind="{
-      modelValue: visible,
+      modelValue,
       hideOnClickOutside: false,
       showClose: false,
     }"
@@ -13,10 +13,10 @@
     </div>
     <template #footer>
       <div class="_display:flex _justify-content:space-between">
-        <i-button color="danger" v-on:click="emits('clickOk')">
+        <i-button color="danger" v-on:click="clickOk()">
           {{ okLabel }}
         </i-button>
-        <i-button color="light" v-on:click="emits('clickCancel')">
+        <i-button color="light" v-on:click="dispatchHide()">
           {{ cancelLabel }}
         </i-button>
       </div>
@@ -25,9 +25,9 @@
 </template>
 
 <script setup>
-const emits = defineEmits(["clickOk", "clickCancel"]);
+const emits = defineEmits(["update:modelValue", "clickOk"]);
 defineProps({
-  visible: {
+  modelValue: {
     type: Boolean,
     required: true,
   },
@@ -44,4 +44,12 @@ defineProps({
     default: "キャンセル",
   },
 });
+
+const dispatchHide = () => {
+  emits("update:modelValue", false);
+};
+const clickOk = () => {
+  dispatchHide();
+  emits("clickOk");
+};
 </script>

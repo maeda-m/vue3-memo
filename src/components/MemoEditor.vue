@@ -79,3 +79,9 @@ const hideConfirm = () => {
   visibleConfirm.value = false;
 };
 </script>
+
+<style scoped>
+button.-disabled {
+  ----opacity--disabled: 0.7;
+}
+</style>

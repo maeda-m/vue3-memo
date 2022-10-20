@@ -7,6 +7,12 @@
       >
         <p block class="_text:left">
           {{ memo.title }}
+          &nbsp;
+          <i-icon
+            name="ink-circle"
+            size="sm"
+            v-if="isActive(id) && props.isNotSaved"
+          />
         </p>
       </i-list-group-item>
     </template>

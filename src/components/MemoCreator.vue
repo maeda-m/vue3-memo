@@ -3,7 +3,6 @@
     <i-tooltip color="dark">
       <i-button circle size="lg" v-on:click="showConfirmNeeded()">
         <i-icon name="ink-plus" />
-        <!-- <i-loader /> -->
       </i-button>
       <template #body>新規メモを登録します。</template>
     </i-tooltip>

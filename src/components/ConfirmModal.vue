@@ -1,6 +1,5 @@
 <template>
   <i-modal
-    size="sm"
     v-bind="{
       modelValue: visible,
       hideOnClickOutside: false,

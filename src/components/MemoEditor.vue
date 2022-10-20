@@ -38,30 +38,23 @@
     </div>
   </i-layout-footer>
 
-  <i-modal size="sm" v-model="visibleConfirm">
-    <template #header> 確認メッセージ </template>
-    <div class="_display:flex _align-items:center">
-      <i-icon name="ink-danger" class="h2 _margin-y:0 _margin-right:1" />
-      メモを削除します。よろしいでしょうか？
-    </div>
-    <template #footer>
-      <div class="_display:flex _justify-content:space-between">
-        <i-button
-          color="danger"
-          v-on:click="
-            hideConfirm();
-            emits('actionDestroy', { id });
-          "
-          >削除する</i-button
-        >
-        <i-button color="light" v-on:click="hideConfirm()">キャンセル</i-button>
-      </div>
-    </template>
-  </i-modal>
+  <ConfirmModal
+    v-bind="{
+      visible: visibleConfirm,
+      message: 'メモを削除します。よろしいでしょうか？',
+      okLabel: '削除する',
+    }"
+    v-on:click-ok="
+      emits('actionDestroy', { id });
+      hideConfirm();
+    "
+    v-on:click-cancel="hideConfirm()"
+  />
 </template>
 
 <script setup>
 import { ref, toRef, computed } from "vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 const emits = defineEmits(["actionUpdate", "actionDestroy", "inputting"]);
 const props = defineProps({

@@ -1,7 +1,12 @@
 <template>
   <i-layout vertical class="_height:100vh">
     <i-layout-aside>
-      <MemoList v-bind:memos="memos" v-on:action-edit="edit($event.id)" />
+      <MemoList
+        v-bind:memos="memos"
+        v-bind:activeMemoId="editMemo.id"
+        v-bind:isNotSaved="isNotSaved"
+        v-on:action-edit="edit($event.id)"
+      />
       <MemoCreator
         v-bind:isNotSaved="isNotSaved"
         v-on:action-create="create()"

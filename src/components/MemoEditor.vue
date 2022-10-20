@@ -1,9 +1,9 @@
 <template>
   <i-layout-content>
     <i-textarea
-      v-bind:disabled="!isEditing"
+      v-bind:disabled="!isActive"
       v-bind:placeholder="
-        isEditing
+        isActive
           ? 'メモの内容を入力してください。'
           : '新規メモを登録するか、編集するメモを選んでください。'
       "
@@ -16,7 +16,7 @@
     <div class="_display:flex _margin:1/2">
       <div class="_flex-grow:1">
         <i-button
-          v-bind:disabled="!isEditing"
+          v-bind:disabled="!isActive"
           color="primary"
           class="_width:100%"
           v-on:click="emits('actionUpdate', { id, attrs: { content } })"
@@ -27,7 +27,7 @@
       <div class="_margin-x:1/2"></div>
       <div>
         <i-button
-          v-bind:disabled="!isEditing"
+          v-bind:disabled="!isActive"
           outline
           color="danger"
           v-on:click="showConfirm()"
@@ -67,7 +67,7 @@ const props = defineProps({
 const id = toRef(props.memo, "id");
 const content = toRef(props.memo, "content");
 
-const isEditing = computed(() => {
+const isActive = computed(() => {
   return !!id.value;
 });
 

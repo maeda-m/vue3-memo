@@ -16,7 +16,7 @@
       okLabel: '破棄する',
     }"
     v-on:click-ok="
-      emits('actionCreate');
+      dispatchCreateAction();
       hideConfirm();
     "
     v-on:click-cancel="hideConfirm()"
@@ -40,8 +40,11 @@ const showConfirmNeeded = () => {
   if (props.isNotSaved) {
     visibleConfirm.value = true;
   } else {
-    emits("actionCreate");
+    dispatchCreateAction();
   }
+};
+const dispatchCreateAction = () => {
+  emits("actionCreate");
 };
 const hideConfirm = () => {
   visibleConfirm.value = false;

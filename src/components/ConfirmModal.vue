@@ -1,23 +1,25 @@
 <template>
   <i-modal
     size="sm"
-    v-bind:modelValue="props.visible"
-    v-bind:hideOnClickOutside="false"
-    v-bind:showClose="false"
+    v-bind="{
+      modelValue: visible,
+      hideOnClickOutside: false,
+      showClose: false,
+    }"
   >
     <template #header> 確認メッセージ </template>
     <div class="_display:flex _align-items:center">
       <i-icon name="ink-danger" class="h2 _margin-y:0 _margin-right:1" />
-      {{ props.message }}
+      {{ message }}
     </div>
     <template #footer>
       <div class="_display:flex _justify-content:space-between">
-        <i-button color="danger" v-on:click="emits('clickOk')">{{
-          props.okLabel
-        }}</i-button>
-        <i-button color="light" v-on:click="emits('clickCancel')">{{
-          props.cancelLabel
-        }}</i-button>
+        <i-button color="danger" v-on:click="emits('clickOk')">
+          {{ okLabel }}
+        </i-button>
+        <i-button color="light" v-on:click="emits('clickCancel')">
+          {{ cancelLabel }}
+        </i-button>
       </div>
     </template>
   </i-modal>
@@ -25,7 +27,7 @@
 
 <script setup>
 const emits = defineEmits(["clickOk", "clickCancel"]);
-const props = defineProps({
+defineProps({
   visible: {
     type: Boolean,
     required: true,

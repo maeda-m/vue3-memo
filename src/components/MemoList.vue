@@ -19,7 +19,7 @@
       okLabel: '破棄する',
     }"
     v-on:click-ok="
-      emits('actionEdit', { id: focusMemoId });
+      dispatchEditAction(focusMemoId);
       hideConfirm();
     "
     v-on:click-cancel="hideConfirm()"
@@ -59,9 +59,12 @@ const showConfirmNeeded = (id) => {
     if (props.isNotSaved) {
       visibleConfirm.value = true;
     } else {
-      emits("actionEdit", { id });
+      dispatchEditAction(id);
     }
   }
+};
+const dispatchEditAction = (id) => {
+  emits("actionEdit", { id });
 };
 const hideConfirm = () => {
   visibleConfirm.value = false;

@@ -23,6 +23,15 @@
         v-on:action-destroy="destroy($event.id)"
       />
     </i-layout>
+
+    <ToastMessage
+      v-model="isDestroyed"
+      v-bind:message="'メモを削除しました。'"
+    />
+    <ToastMessage
+      v-model="isUpdated"
+      v-bind:message="'メモを更新しました。'"
+    />
   </i-layout>
 </template>
 
@@ -30,6 +39,7 @@
 import MemoList from "@/components/MemoList.vue";
 import MemoCreator from "@/components/MemoCreator.vue";
 import MemoEditor from "@/components/MemoEditor.vue";
+import ToastMessage from "@/components/ToastMessage.vue";
 
 import { ref, reactive, onMounted } from "vue";
 import Memo from "@/models/Memo.js";
@@ -45,17 +55,21 @@ const edit = (memoId) => {
   syncEditor(memo.attrs);
 };
 
+const isUpdated = ref(false);
 const update = (memoId, attrs) => {
   const memo = memos[memoId];
   memo.update(attrs);
   syncEditor(memo.attrs);
+  isUpdated.value = true;
 };
 
+const isDestroyed = ref(false);
 const destroy = (memoId) => {
   const memo = memos[memoId];
   memo.destroy();
   delete memos[memoId];
   syncEditor(null);
+  isDestroyed.value = true;
 };
 
 const memos = reactive({});
